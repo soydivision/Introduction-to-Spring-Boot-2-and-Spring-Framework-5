@@ -26,38 +26,44 @@ public class BootStrapData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Starting Bootstrap");
 
-        Publisher publisher = new Publisher();
-        publisher.setName("SFG publishing");
-        publisher.setCity("Saint Petersburg");
-        publisher.setState("FL");
+        Publisher sfg = new Publisher();
+        sfg.setName("SFG publishing");
+        sfg.setCity("Saint Petersburg");
+        sfg.setState("FL");
+        publisherRepository.save(sfg);
 
-        publisherRepository.save(publisher);
-        System.out.println("Publisher count" + publisherRepository.count());
+        Publisher manning = new Publisher();
+        manning.setName("Manning Publications");
+        manning.setCity("New York");
+        manning.setState("New York");
+        publisherRepository.save(manning);
+
+        System.out.println("Publisher count: " + publisherRepository.count());
 
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain driven design", "1234");
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
 
-        ddd.setPublisher(publisher);
-        publisher.getBooks().add(ddd);
+        ddd.setPublisher(sfg);
+        sfg.getBooks().add(ddd);
 
         authorRepository.save(eric);
         bookRepository.save(ddd);
-        publisherRepository.save(publisher);
+        publisherRepository.save(sfg);
 
         Author rod = new Author("Rod", "Johnson");
         Book noEJB = new Book("J2EE Development without EJB", "234234");
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
 
-        noEJB.setPublisher(publisher);
-        publisher.getBooks().add(noEJB);
+        noEJB.setPublisher(sfg);
+        sfg.getBooks().add(noEJB);
         authorRepository.save(rod);
         bookRepository.save(noEJB);
-        publisherRepository.save(publisher);
+        publisherRepository.save(sfg);
 
         System.out.println("Number of books: " + bookRepository.count());
-        System.out.println("Publisher number of books" + publisher.getBooks().size());
+        System.out.println("Publisher number of books" + sfg.getBooks().size());
     }
 }
